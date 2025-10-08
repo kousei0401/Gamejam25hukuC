@@ -2,17 +2,27 @@ using UnityEngine;
 
 public class FireworkManager : MonoBehaviour
 {
+    [Header("花火設定")]
     public GameObject fireworkPrefab;
     public float cooldown = 0.5f;
+
+    public bool IsCurrentFirework(GameObject obj)
+    {
+        return currentFirework == obj;
+    }
+
+
+    [Header("発射位置")]
+    public Transform firePoint; // 筒の先端（空の子オブジェクトなど）
 
     private float lastFireTime;
     private GameObject currentFirework = null;
 
     void Update()
     {
+        // 左クリック + クールタイム + 花火がまだ無い場合のみ発射
         if (Input.GetMouseButtonDown(0) && Time.time - lastFireTime > cooldown)
         {
-            // まだ爆発していない花火があれば発射不可
             if (currentFirework == null)
             {
                 lastFireTime = Time.time;
@@ -23,24 +33,19 @@ public class FireworkManager : MonoBehaviour
 
     void LaunchFirework()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        // firePoint の位置と向きで花火を生成
+        GameObject firework = Instantiate(fireworkPrefab, firePoint.position, firePoint.rotation);
+        currentFirework = firework;
+
+        // 花火にマネージャーを通知できるようにする
+        FireworkProjectile fw = firework.GetComponent<FireworkProjectile>();
+        if (fw != null)
         {
-            Vector3 direction = (hit.point - transform.position).normalized;
-
-            GameObject firework = Instantiate(fireworkPrefab, transform.position, Quaternion.LookRotation(direction));
-            currentFirework = firework;
-
-            // FireworkProjectile に自分を渡して、爆発したら null にしてもらう
-            FireworkProjectile fw = firework.GetComponent<FireworkProjectile>();
-            if (fw != null)
-            {
-                fw.manager = this; // ← このスクリプト自身を渡す
-            }
+            fw.manager = this;
         }
     }
 
-    // FireworkProjectile から呼ばれる
+    // 花火が爆発した時に呼び出される（Projectile側から）
     public void OnFireworkExploded(GameObject firework)
     {
         if (currentFirework == firework)

@@ -1,63 +1,85 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FireworkProjectile : MonoBehaviour
 {
+    public float initialSpeed = 20f;
+    public float slowdownRate = 2f;
+    public float minSpeed = 0.1f;
     public float explosionRadius = 5f;
     public GameObject explosionEffect;
-    public float initialSpeed = 20f;
 
-    public FireworkManager manager; // ← 発射元マネージャー（通知用）
+    [HideInInspector]
+    public FireworkManager manager;
 
-    private static HashSet<GameObject> exploded = new HashSet<GameObject>();
+    private Rigidbody rb;
+    private bool hasExploded = false;
 
     void Start()
     {
-        Rigidbody rb = GetComponent<Rigidbody>();
-        if (rb != null)
+        rb = GetComponent<Rigidbody>();
+        rb.velocity = transform.forward * initialSpeed;
+    }
+
+    void Update()
+    {
+        if (!hasExploded && rb.velocity.magnitude > minSpeed)
         {
-            rb.velocity = transform.forward * initialSpeed;
+            rb.velocity -= rb.velocity.normalized * slowdownRate * Time.deltaTime;
+        }
+
+        if (Input.GetMouseButtonDown(1) && manager != null && manager.IsCurrentFirework(gameObject))
+        {
+            Explode();
         }
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if (exploded.Contains(gameObject)) return;
+        if (hasExploded) return;
 
         if (collision.gameObject.CompareTag("Enemy"))
         {
+            Enemy enemy = collision.gameObject.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage(1);
+            }
             Explode();
         }
     }
 
     public void Explode()
     {
-        if (exploded.Contains(gameObject)) return;
-
-        exploded.Add(gameObject);
+        if (hasExploded) return;
+        hasExploded = true;
 
         if (explosionEffect != null)
         {
             Instantiate(explosionEffect, transform.position, Quaternion.identity);
         }
 
-        // 連鎖爆発
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, explosionRadius);
-        foreach (var col in hitColliders)
+        Collider[] hits = Physics.OverlapSphere(transform.position, explosionRadius);
+        foreach (Collider hit in hits)
         {
-            GameObject obj = col.gameObject;
-
-            if (obj.CompareTag("Firework") && obj != this.gameObject)
+            if (hit.CompareTag("Firework") && hit.gameObject != gameObject)
             {
-                FireworkProjectile other = obj.GetComponent<FireworkProjectile>();
+                FireworkProjectile other = hit.GetComponent<FireworkProjectile>();
                 if (other != null)
                 {
                     other.Explode();
                 }
             }
+
+            if (hit.CompareTag("Enemy"))
+            {
+                Enemy enemy = hit.GetComponent<Enemy>();
+                if (enemy != null)
+                {
+                    enemy.TakeDamage(1);
+                }
+            }
         }
 
-        // 爆発を通知してから削除
         if (manager != null)
         {
             manager.OnFireworkExploded(gameObject);
