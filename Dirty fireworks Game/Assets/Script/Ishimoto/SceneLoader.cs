@@ -3,17 +3,32 @@ using UnityEngine.SceneManagement;
 
 public class SceneTransitionManager : MonoBehaviour
 {
+
+
     // ステージ選択画面へ移動
     public void GoToStageSelect()
     {
         SceneManager.LoadScene("StageSelect");
     }
 
-    // ゲームシーンへ移動（後で使う用）
-    public void GoToGame()
+    // ステージ1へ遷移
+    public void GoToGameStage1()
     {
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene("Game1");
     }
+
+    // ステージ2へ遷移
+    public void GoToGameStage2()
+    {
+        SceneManager.LoadScene("Game2");
+    }
+
+    // ステージ3へ遷移
+    public void GoToGameStage3()
+    {
+        SceneManager.LoadScene("Game3");
+    }
+
 
     // タイトルへ戻る（後で使う用）
     public void GoToTitle()
