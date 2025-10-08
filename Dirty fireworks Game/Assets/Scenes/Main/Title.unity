@@ -612,7 +612,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 146133576}
         m_TargetAssemblyTypeName: SceneTransitionManager, Assembly-CSharp
-        m_MethodName: GoToStageSelect
+        m_MethodName: GoToGameStage1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
