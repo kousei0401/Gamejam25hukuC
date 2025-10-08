@@ -14,6 +14,6 @@ public class TimerUI : MonoBehaviour
     public void UpdateUI(float currentTime, float maxTime)
     {
         timeSlider.value = currentTime / maxTime;
-        timeText.text = $"Žc‚èŽžŠÔ: {currentTime:F1}•b";
+        timeText.text = $"Žc‚èŽžŠÔ: {currentTime:F0}•b";
     }
 }

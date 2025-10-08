@@ -14,7 +14,6 @@ public class GameTimer : MonoBehaviour
     [Header("イベント設定")]
     public UnityEvent onGameOver; // 残り時間が0になった時に呼ばれる
 
-    public event Action OnTimerEnd;
 
     [SerializeField] private TimerUI timerUI;
 
@@ -34,7 +33,8 @@ public class GameTimer : MonoBehaviour
         {
             currentTime = 0f;
             isRunning = false;
-            OnTimerEnd?.Invoke();
+            onGameOver?.Invoke();
+
         }
     }
 
@@ -49,6 +49,12 @@ public class GameTimer : MonoBehaviour
     {
         currentTime = Mathf.Min(currentTime + value, startTime);
         timerUI?.UpdateUI(currentTime, startTime);
+    }
+    public void ReduceTime(float value)
+    {
+        currentTime = Mathf.Min(currentTime - value, startTime);
+        timerUI?.UpdateUI(currentTime, startTime);
+
     }
 }
 
