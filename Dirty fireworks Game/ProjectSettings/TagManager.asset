@@ -4,8 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Firework
   - Enemy
+  - FireWork
   layers:
   - Default
   - TransparentFX
