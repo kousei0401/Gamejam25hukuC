@@ -31,17 +31,15 @@ public class FireworkManager : MonoBehaviour
         }
     }
 
+
     void LaunchFirework()
     {
-        // firePoint の位置と向きで花火を生成
-        GameObject firework = Instantiate(fireworkPrefab, firePoint.position, firePoint.rotation);
-        currentFirework = firework;
-
-        // 花火にマネージャーを通知できるようにする
-        FireworkProjectile fw = firework.GetComponent<FireworkProjectile>();
-        if (fw != null)
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            fw.manager = this;
+            Vector3 direction = (hit.point - transform.position).normalized;
+
+            GameObject firework = Instantiate(fireworkPrefab, transform.position, Quaternion.LookRotation(direction));
         }
     }
 
