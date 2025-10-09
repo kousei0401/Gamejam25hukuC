@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class EnemyBase : MonoBehaviour
 {
@@ -17,11 +13,11 @@ public class EnemyBase : MonoBehaviour
     protected int m_maxHealth;
 
     // 基底クラスで初期化
-    protected int m_crrentHealth;
+    [SerializeField] protected int m_crrentHealth;
     protected EnemyState m_currentState;
     protected SphereCollider m_collider;
 
-    // 誘爆関係
+    // 連鎖爆破関係
     protected float m_defaultRadius;
     protected float m_explosionRadiusMultiplier;
     protected float m_explosionExpandTime;
@@ -35,23 +31,28 @@ public class EnemyBase : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 初期化処理
+    /// </summary>
     protected virtual void Initialize()
     {
+        // タグを「Enemy」にする
         gameObject.tag = "Enemy";
 
+        // 各派生クラスで最大HPを初期化してください
         if (m_maxHealth <= 0)
         {
             Debug.LogWarning("初期HPに不正な値が設定されています。");
-
-            m_maxHealth = 1;    // 仮値
         }
 
+        // パラメータの初期化
         m_crrentHealth = m_maxHealth;
         m_currentState = EnemyState.Idle;
         m_collider = GetComponent<SphereCollider>();
 
+        // 連鎖爆破関連の初期化
         m_defaultRadius = m_collider.radius;
-        m_explosionRadiusMultiplier = 2f;
+        m_explosionRadiusMultiplier = 2.01f;
         m_explosionExpandTime = 1.5f;
         m_expamdTimer = 0;
         m_isExpanding = false;
@@ -67,17 +68,25 @@ public class EnemyBase : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 衝突検知
+    /// </summary>
+    /// <param name="other"></param>
     protected virtual void OnTriggerEnter(Collider other)
     {
+        // 「Idle」状態以外は return
         if (m_currentState != EnemyState.Idle) return;
 
+        // 花火と衝突
         if (other.CompareTag("Firework"))
         {
-            Debug.Log("衝突");
+            // ダメージ
             TakeDamage();
         }
+        // 敵(連鎖爆破)と衝突
         else if(other.CompareTag("Enemy"))
         {
+            // 衝突した敵の状態確認
             EnemyBase enemy = other.GetComponent<EnemyBase>();
             if (enemy == null) return;
 
@@ -89,10 +98,14 @@ public class EnemyBase : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// ダメージを受ける
+    /// </summary>
     protected virtual void TakeDamage()
     {
         m_crrentHealth--;
 
+        // HPが0以下になったら爆破する
         if (m_crrentHealth <= 0)
         {
             ChangeState(EnemyState.Exploding);
@@ -101,22 +114,34 @@ public class EnemyBase : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 状態遷移
+    /// </summary>
+    /// <param name="nextState"></param>
     protected virtual void ChangeState(EnemyState nextState)
     {
         if (m_currentState == nextState) return;
         m_currentState = nextState;
-
-        Debug.Log("状態が" +  m_currentState + "に変更");
     }
 
 
+    /// <summary>
+    /// 爆破処理
+    /// </summary>
     protected virtual void OnExplosion()
     {
         m_isExpanding = true;
         m_expamdTimer = 0;
+
+        // 通常テクスチャ -> 花火テクスチャ に切り替え
+
     }
 
 
+    /// <summary>
+    /// 敵のコライダーを徐々に拡大。
+    /// 連鎖爆破のエフェクトに合わせられると尚良し
+    /// </summary>
     private void ExpandColliderOverTime()
     {
         m_expamdTimer += Time.deltaTime;
@@ -135,11 +160,16 @@ public class EnemyBase : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 死亡
+    /// </summary>
     protected virtual void OnDead()
     {
         m_collider.radius = m_defaultRadius;
 
         gameObject.SetActive(false);
+
+        // とりあえず通常状態に戻してるけど、いらないかも
         ChangeState(EnemyState.Idle);
     }
 }
