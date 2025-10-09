@@ -41,7 +41,7 @@ public class EnemyBase : MonoBehaviour
 
         if (m_maxHealth <= 0)
         {
-            //Debug.LogWarning("初期HPに不正な値が設定されています。");
+            Debug.LogWarning("初期HPに不正な値が設定されています。");
 
             m_maxHealth = 1;    // 仮値
         }
@@ -51,7 +51,7 @@ public class EnemyBase : MonoBehaviour
         m_collider = GetComponent<SphereCollider>();
 
         m_defaultRadius = m_collider.radius;
-        m_explosionRadiusMultiplier = 1.5f;
+        m_explosionRadiusMultiplier = 2f;
         m_explosionExpandTime = 1.5f;
         m_expamdTimer = 0;
         m_isExpanding = false;
@@ -140,5 +140,6 @@ public class EnemyBase : MonoBehaviour
         m_collider.radius = m_defaultRadius;
 
         gameObject.SetActive(false);
+        ChangeState(EnemyState.Idle);
     }
 }
