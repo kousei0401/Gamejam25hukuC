@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -2291886531060085525}
   m_Layer: 0
   m_Name: FireWork
-  m_TagString: FireWork
+  m_TagString: Firework
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -146,7 +146,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5330d6dedd543c4aaf700f382ab61b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialSpeed: 20
+  slowdownRate: 2
+  minSpeed: 0.1
   explosionRadius: 5
   explosionEffect: {fileID: 0}
-  initialSpeed: 20
+  launchSE: {fileID: 8300000, guid: c12177decc5a59b498f27bcf1468281c, type: 3}
+  explosionSE: {fileID: 8300000, guid: c12177decc5a59b498f27bcf1468281c, type: 3}
   manager: {fileID: 0}
