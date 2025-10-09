@@ -20,6 +20,7 @@ public class GameTimer : MonoBehaviour
     private void Start()
     {
         StartTimer(startTime);
+        SoundManager.Instance.PlayBGM(SoundManager.BGMType.TitleBGM);
     }
 
     private void Update()
@@ -34,6 +35,7 @@ public class GameTimer : MonoBehaviour
             currentTime = 0f;
             isRunning = false;
             onGameOver?.Invoke();
+            SoundManager.Instance.StopBGM();
 
         }
     }

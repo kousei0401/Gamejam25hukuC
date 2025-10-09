@@ -138,7 +138,7 @@ public class EnemyBase : MonoBehaviour
     protected virtual void OnDead()
     {
         m_collider.radius = m_defaultRadius;
-
+        
         gameObject.SetActive(false);
         ChangeState(EnemyState.Idle);
     }
