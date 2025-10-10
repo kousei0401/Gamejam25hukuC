@@ -1,37 +1,70 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.SceneManagement;
+
 
 public class SceneTransitionManager : MonoBehaviour
 {
 
 
-    // ƒXƒe[ƒW‘I‘ğ‰æ–Ê‚ÖˆÚ“®
+    // ã‚¹ãƒ†ãƒ¼ã‚¸é¸æŠç”»é¢ã¸ç§»å‹•
     public void GoToStageSelect()
     {
         SceneManager.LoadScene("StageSelect");
     }
 
-    // ƒXƒe[ƒW‚Ö‘JˆÚ
+    // ã‚¹ãƒ†ãƒ¼ã‚¸ã¸é·ç§»
     public void GoToGameStage1()
     {
         SceneManager.LoadScene("Game1");
     }
 
-   
 
-
-    // ƒ^ƒCƒgƒ‹‚Ö–ß‚éiŒã‚Åg‚¤—pj
+    // ã‚¿ã‚¤ãƒˆãƒ«ã¸æˆ»ã‚‹ï¼ˆå¾Œã§ä½¿ã†ç”¨ï¼‰
     public void GoToTitle()
     {
         SceneManager.LoadScene("Title");
     }
 
-    // I—¹ˆ—iPCƒrƒ‹ƒh—pj
+    // â˜… ã‚²ãƒ¼ãƒ ã‚¯ãƒªã‚¢æ™‚ã«å‘¼ã°ã‚Œã‚‹é–¢æ•°
+    public void OnGameClear()
+    {
+        SceneManager.LoadScene("GameClear");
+    }
+
+    // â˜… ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ™‚ã«å‘¼ã°ã‚Œã‚‹é–¢æ•°
+    public void OnGameOver()
+    {
+        SceneManager.LoadScene("GameOver");
+    }
+
+
+
+
+
+    // çµ‚äº†å‡¦ç†ï¼ˆPCãƒ“ãƒ«ãƒ‰æ™‚ç”¨ï¼‰
     public void QuitGame()
     {
         Application.Quit();
 #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false; // ƒGƒfƒBƒ^—p
+        UnityEditor.EditorApplication.isPlaying = false; // ã‚¨ãƒ‡ã‚£ã‚¿ç”¨
 #endif
     }
+
+    
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
