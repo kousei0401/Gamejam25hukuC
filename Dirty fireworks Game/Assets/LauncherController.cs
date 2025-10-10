@@ -8,18 +8,34 @@ public class LauncherController : MonoBehaviour
     {
         if (mainCamera == null) return;
 
+        // マウス位置からRayを飛ばす
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
+        // Rayが何かに当たったら
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
+            // 当たった位置
             Vector3 targetPoint = hit.point;
 
-            //  高さも含めた方向を正しく計算
-            Vector3 direction = (targetPoint - transform.position).normalized;
+            // 自分の位置から当たった場所への方向ベクトル
+            Vector3 direction = targetPoint - transform.position;
 
-            //  完全な3D回転で向かせる
-            Quaternion lookRotation = Quaternion.LookRotation(direction, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 10f);
+            // 高さ（Y軸）は無視して水平だけ向かせたい場合はコメントアウト外す
+            direction.y = 0;
+
+            if (direction.sqrMagnitude > 0.001f)
+            {
+                // 方向ベクトルから回転を算出
+                Quaternion lookRotation = Quaternion.LookRotation(direction, Vector3.up);
+
+                // スムーズに回転
+                transform.rotation = Quaternion.Slerp(
+                    transform.rotation,
+                    lookRotation,
+                    Time.deltaTime * 10f
+                );
+            }
         }
     }
 }
+
