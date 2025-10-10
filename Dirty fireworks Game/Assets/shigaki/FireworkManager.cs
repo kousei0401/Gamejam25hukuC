@@ -19,12 +19,8 @@ public class FireworkManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && Time.time - lastFireTime > cooldown)
         {
-            if (currentFirework == null)
-            {
-                lastFireTime = Time.time;
-                LaunchFirework();
-            }
-        }
+            LaunchFirework();
+}
     }
 
     void LaunchFirework()
