@@ -168,6 +168,8 @@ public class EnemyBase : MonoBehaviour
         m_collider.radius = m_defaultRadius;
         
         gameObject.SetActive(false);
+        
+        SoundManager.Instance.PlaySE(SoundManager.SEType.BombSE);
 
         // ‚Æ‚è‚ ‚¦‚¸’Êíó‘Ô‚É–ß‚µ‚Ä‚é‚¯‚ÇA‚¢‚ç‚È‚¢‚©‚à
         ChangeState(EnemyState.Idle);
