@@ -30,6 +30,6 @@ public class ResultManeger : MonoBehaviour
 
     public void OnInactiveFound()
     {
-       SceneManager.LoadScene("GameOver");
+       SceneManager.LoadScene("GamaClear");
     }
 }

@@ -151,7 +151,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb00f2e22e6e76a4a9e5ce579471ff31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objects: []
+  objects:
+  - {fileID: 502735752}
+  - {fileID: 1183320779}
+  - {fileID: 390655972}
+  - {fileID: 1686871920}
+  - {fileID: 978074903}
+  - {fileID: 1982133936}
+  - {fileID: 1737659481}
+  - {fileID: 393821186}
+  - {fileID: 791441666}
+  - {fileID: 1533630930}
+  - {fileID: 1750272277}
+  - {fileID: 633583056}
+  - {fileID: 1944119855}
+  - {fileID: 1609407641}
+  - {fileID: 1626711320}
+  - {fileID: 1989413943}
+  - {fileID: 126182551}
+  - {fileID: 83323421}
+  - {fileID: 120731821}
+  - {fileID: 1193728200}
+  - {fileID: 1993254891}
+  - {fileID: 132154562}
+  - {fileID: 1257325741}
+  - {fileID: 1822140482}
+  - {fileID: 75412521}
+  - {fileID: 1089582500}
+  - {fileID: 392574273}
+  - {fileID: 1089582500}
+  - {fileID: 2109913589}
+  - {fileID: 782064321}
+  - {fileID: 1133677147}
+  - {fileID: 1281676625}
+  - {fileID: 328729229}
+  - {fileID: 742680489}
+  - {fileID: 1918222041}
+  - {fileID: 1126406667}
 --- !u!4 &30297836
 Transform:
   m_ObjectHideFlags: 0
@@ -4331,6 +4367,9 @@ MonoBehaviour:
   fireworkPrefab: {fileID: 3200621431405035061, guid: b421cf7ea6d6eea45b963114561b6118, type: 3}
   cooldown: 0.5
   firePoint: {fileID: 1195072160}
+  aimMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!114 &1185061019
 MonoBehaviour:
   m_ObjectHideFlags: 0
